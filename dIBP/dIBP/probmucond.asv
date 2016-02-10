@@ -1,0 +1,6 @@
+function p = probmucond(mur, murp, murm)
+% Conditional probability Prob(mur | murp, murm) in Eq. (2.20)
+% Note: all mu's are full
+    function prob = probmujoin(mu)
+    
+end

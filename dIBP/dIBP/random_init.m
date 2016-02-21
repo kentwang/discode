@@ -87,4 +87,6 @@ mu_v = mu_v(1:L);
 U = U(:, 1:K);
 V = V(:, 1:L);
 
-
+[mu_u_new, mu_v_new] = samplemu(U, V, mu_u, mu_v, a, b);
+disp('Update of mu_u: '); disp([mu_u_new, mu_u]); 
+disp('Update of mu_v: '); disp([mu_v_new, mu_v]);

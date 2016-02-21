@@ -13,16 +13,25 @@ function output = mucondpdf(mur, murp, murm, a, b, c)
 
 % Todo:
 %   - verify the consistency of -1
+%   - verify murp and murm not zeros at same time
     
     % check if mu contains -1 that indicates non-pairing
     % if yes, the dimension should be all 1's for mur, murp, murm
     if ~any(mur == -1)
-        % both muru and murv exist and bibeta(a, b, c) is used
-        difmum = mur ./ murm;
-        difmup = murp ./ mur;
-        output = bibetapdf(difmum(1), difmum(2), a, b, c) * ...
-            bibetapdf(difmup(1), difmup(2), a, b, c) / ...
-            prod(murm) / prod(mur);
+        if sum(murm) == 2 % starting mu (both 1)
+            difmup = murp ./ mur;
+            output = bibetapdf(difmup(1), difmup(2), a, b, c) / prod(mur);
+        elseif sum(murp) == 0 % trailing my (both 0)
+            difmum = mur ./ murm;
+            output = bibetapdf(difmum(1), difmum(2), a, b, c) / prod(murm);
+        else
+            % both muru and murv exist and bibeta(a, b, c) is used
+            difmum = mur ./ murm;
+            difmup = murp ./ mur;
+            output = bibetapdf(difmum(1), difmum(2), a, b, c) * ...
+                bibetapdf(difmup(1), difmup(2), a, b, c) / ...
+                prod(murm) / prod(mur);
+        end
     elseif find(mur == -1) == 1
         % muru is null and beta(b, c) is used
         difmum = mur(2)/ murm(2);

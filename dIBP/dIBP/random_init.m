@@ -81,3 +81,10 @@ UV_mupdf(U(:, r), V(:, r), mu_u_test(r), mu_v_test(r)) / ...
     mucondproppdf(mur_test, murp_test, murm_test, a, b, c, K, L)
 
 
+%-- Test samplemu.m
+mu_u = mu_u(1:K);
+mu_v = mu_v(1:L);
+U = U(:, 1:K);
+V = V(:, 1:L);
+
+

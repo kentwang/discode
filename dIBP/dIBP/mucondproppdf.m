@@ -4,6 +4,7 @@ function output = mucondproppdf(mur, murp, murm, a, b, c, K_plus, L_plus)
 
 % Todo:
 %   - verify the consistency of -1
+%   - non adjustment for starting and trailing mu needed (1/0)
 
     if ~any(mur == -1)
         % both muru and murv exist and two truncated beta are used

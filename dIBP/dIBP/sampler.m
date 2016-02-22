@@ -6,11 +6,12 @@ seed = 20160209;
 % synthetic data
 I = 40; J = 60;
 K = 4; L = 6;
-[U_true, V_true, Z_true, X] = synthetic(W, I, J, K, L);
 W_true = [[1, 1, 0, 0, 0, 0]; 
     [0, 0, 1, 0, 0, 1]; 
     [0, 0, 0, 1, 1, 1]; 
     [0, 1, 1, 0, 0, 0]];
+[U_true, V_true, Z_true, X] = synthetic(W_true, I, J, K, L);
+
 
 subplot(2,2,1); imagesc(U_true); colormap(gray); axis off
 subplot(2,2,2); imagesc(V_true); colormap(gray); axis off
@@ -27,7 +28,7 @@ sigma_w = .1;
 nuep = -.2;
 alpha = 1; beta = 1;
 K_inf = 15; L_inf = 15;
-
+a = 2; b = 5; c = 1;
 
 
 

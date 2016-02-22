@@ -1,5 +1,5 @@
 function [U, V, Z, X] = synthetic(W, I, J, K, L)
-% Initialized MCMC chain.
+% Simulate ground truth data
 % Output:
 %   - U, V,
 %   - Z, X

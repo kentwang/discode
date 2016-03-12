@@ -1,0 +1,6 @@
+# sftp
+get -r REMOTE_FOLDER LOCAL FOLDER
+put sampler_nofigure.m Matlab_code/
+
+# copy from github repo to octave VM
+cp -r ~/Documents/discode/ ~/Documents/Oct/discode

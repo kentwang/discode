@@ -1,9 +1,9 @@
 function U = sampleUV(U, V, W, nuep, a)
 % Update U and V (simultaneously K and L)
 
-% Test
-% U = U_true; V = V_true;
-% W = W_true; Z = Z_true;
+Test
+U = U_true; V = V_true;
+W = W_true; Z = Z_true;
 
     [I, K] = size(U);
     for i = 1:I
@@ -38,15 +38,19 @@ function U = sampleUV(U, V, W, nuep, a)
                 U(i,k) = 0;
             end
         end
+
         % sample new features
         n_new_lim = 4;
         trunc = zeros(1, n_new_lim + 1);
+        W_hist = {};
         alpha_I = a / I; % alpha/I
         
         for k_i = 0:n_new_lim
-            U(i, (K + 1):(K + k_i)) = 1;
+            U(i, (K + 1):(K + k_i)) = 1; % test here U with new feature
+            W_aug = W_expand(k_i, 2, U, V, W, nuep, sigma_w); % append rows for new features U. TEST GOOD!
             trunc(k_i + 1) = k_i * log(alpha_I) - alpha_I - ...
-                log(factorial(k_i)) + Z_UVWlogpdf(U, V, W, nuep);
+                log(factorial(k_i)) + Z_UVWlogpdf(U, V, W_aug, nuep);
+            W_hist{k_i + 1} = W_aug;
         end
         
         U(i, (K + 1):(K + n_new_lim)) = 0;
@@ -62,6 +66,8 @@ function U = sampleUV(U, V, W, nuep, a)
             end;
         end;
         U(i, (K + 1):(K + new_dishes)) = 1; % exchangeable
+        W = W_hist{new_dishes + 1}
         K = K + new_dishes;
     end
+
 end

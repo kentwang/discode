@@ -2,7 +2,7 @@ function [mu_u, mu_v] = samplemu(U, V, mu_u, mu_v, a, b)
 % Sample feature generating probabilities using MH algorithm
 
 % INPUT
-%   - U, V, mu_u, mu_v: current real feature matrices and probabilityes
+%   - U, V, mu_u, mu_v: current real feature matrices and probabilities
 %   - a, b: controling parameters of dIBP
     
 % TODO

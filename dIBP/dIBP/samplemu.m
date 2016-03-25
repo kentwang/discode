@@ -14,18 +14,21 @@ function [mu_u, mu_v] = samplemu(U, V, mu_u, mu_v, a, b)
     M = max(K, L);
     
     % append zerors
-    if(K < M) 
+    if K < M
         U = [U, zeros(I, M - K)];
-        mu_u = [mu_u; zeros(M - K, 1)];
+        if length(mu_u) < M
+            mu_u = [mu_u; zeros(M - K, 1)];
+        end
     else
         V = [V, zeros(J, M - J)];
-        mu_v = [mu_v; zeros(M - L, 1)];
+        if length(mu_v) < M
+            mu_v = [mu_v; zeros(M - L, 1)];
+        end
     end
     mu = [mu_u, mu_v];
     
     % MH sampling
     for r = 1:M
-        fprintf('Iter %d/%d', r, M);
         % input of each sampling        
         if r == 1 % propose for the first mu
             lower_u = mu_u(r + 1);
@@ -62,7 +65,6 @@ function [mu_u, mu_v] = samplemu(U, V, mu_u, mu_v, a, b)
         if rand < accept_r
             mu(r, :) = mu_r_prop;
         end
-        fprintf(' with accept ratior %f.\n', accept_r);
     end
     
     mu_u = mu(1:K, 1); % truncated to real probs

@@ -1,15 +1,13 @@
-function [U, V, W] = sampleUV(U, V, W, nuep, a, b, sigma_w)
+function [U, V, W] = sampleUV(Z, U, V, W, nuep, a, b, sigma_w)
 % Update U and V (simultaneously K and L)
 % Augment W for new features of U and V
 
 % Test
-% U = U_true; V = V_true;
-% W = W_true; Z = Z_true;
+% U = U_true; V = V_true; W = W_true; Z = Z_true;
     
     % update U (and W if any new row features from U)
     [I, K] = size(U);
     for i = 1:I
-        printf('Updating features for row item %d/%d \n', i, I);
         for k = 1:K
             if k > K
                 break;
@@ -28,10 +26,10 @@ function [U, V, W] = sampleUV(U, V, W, nuep, a, b, sigma_w)
                     
             % sample U
             U(i, k) = 1;
-            p(1) = Z_UVWlogpdf(U, V, W, nuep) + log(sum(U(:, k) - 1)) - ...
+            p(1) = Z_UVWlogpdf(Z, U, V, W, nuep) + log(sum(U(:, k) - 1)) - ...
                 log(I);
             U(i, k) = 0;
-            p(2) = Z_UVWlogpdf(U, V, W, nuep) + log(I - sum(U(:, k))) - ...
+            p(2) = Z_UVWlogpdf(Z, U, V, W, nuep) + log(I - sum(U(:, k))) - ...
                 log(I);
             p = exp(p - max(p));
             
@@ -50,9 +48,9 @@ function [U, V, W] = sampleUV(U, V, W, nuep, a, b, sigma_w)
         
         for k_i = 0:n_new_lim
             U(i, (K + 1):(K + k_i)) = 1; % test here U with new feature
-            W_aug = W_expand(k_i, 2, U, V, W, nuep, sigma_w); % append rows for new features U. TEST GOOD!
+            W_aug = W_expand(k_i, 2, Z, U, V, W, nuep, sigma_w); % append rows for new features U. TEST GOOD!
             trunc(k_i + 1) = k_i * log(alpha_I) - alpha_I - ...
-                log(factorial(k_i)) + Z_UVWlogpdf(U, V, W_aug, nuep);
+                log(factorial(k_i)) + Z_UVWlogpdf(Z, U, V, W_aug, nuep);
             W_hist{k_i + 1} = W_aug;
         end
         
@@ -80,7 +78,6 @@ function [U, V, W] = sampleUV(U, V, W, nuep, a, b, sigma_w)
     % update V (and W if any new column features from V)
     [J, L] = size(V);
     for j = 1:J
-        printf('Updating features for column item %d/%d \n', j, J);
         for l = 1:L
             if l > L
                 break;
@@ -96,10 +93,10 @@ function [U, V, W] = sampleUV(U, V, W, nuep, a, b, sigma_w)
 
             % sample V
             V(j, l) = 1;
-            p(1) = Z_UVWlogpdf(U, V, W, nuep) + log(sum(V(:, l) - 1)) - ...
+            p(1) = Z_UVWlogpdf(Z, U, V, W, nuep) + log(sum(V(:, l) - 1)) - ...
                 log(J);
             V(j, l) = 0;
-            p(2) = Z_UVWlogpdf(U, V, W, nuep) + log(J - sum(V(:, l))) - ...
+            p(2) = Z_UVWlogpdf(Z, U, V, W, nuep) + log(J - sum(V(:, l))) - ...
                 log(J);
             p = exp(p - max(p));
             
@@ -118,9 +115,9 @@ function [U, V, W] = sampleUV(U, V, W, nuep, a, b, sigma_w)
         
         for l_j = 0:n_new_lim
             V(j, (L + 1):(L + l_j)) = 1; % test here V with new feature
-            W_aug = W_expand(l_j, 1, U, V, W, nuep, sigma_w);
+            W_aug = W_expand(l_j, 1, Z, U, V, W, nuep, sigma_w);
             trunc(l_j + 1) = l_j * log(beta_J) - beta_J - ...
-                log(factorial(l_j)) + Z_UVWlogpdf(U, V, W_aug, nuep);
+                log(factorial(l_j)) + Z_UVWlogpdf(Z, U, V, W_aug, nuep);
             W_hist{l_j + 1} = W_aug;
         end
 

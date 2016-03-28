@@ -1,6 +1,7 @@
 function [a, b] = updateAB(a, b, mu)
 % update alpha and beta using MH sampling with uniform perturbation
 	
+	% printf('[a, b]: [%f, %f]\n', a, b);
 	% propose a and b using uniform perturbation
 	if rand < .5
 		a_prop = a + rand/20;

@@ -11,6 +11,7 @@ pkg load statistics;
 
 % fix random seed
 seed = 20160209;
+rand ("seed", seed)
 
 % initialization (tell the difference between initialization and ground truth)
 sigma_w = .1;
@@ -20,7 +21,7 @@ K_inf = 15; L_inf = 15;
 a = 2; b = 5; c = 1;
 
 % synthetic data
-I = 40; J = 60;
+I = 15; J = 20;
 K = 4; L = 6;
 M = max(K, L);
 W_true = [[1, 1, 0, 0, 0, 0]; 

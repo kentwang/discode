@@ -1,0 +1,8 @@
+iMac
+
+42.0844 secs for 100 x 100
+
+166.116 secs for 200 x 200
+
+
+29903 seconds for 500 x 1000

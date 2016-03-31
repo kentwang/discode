@@ -1,10 +1,8 @@
-function [U, V, Z, X] = synthetic(W, I, J, K, L)
+function [U, V, Z, X] = synthetic(W, I, J, K, L, nuep)
 % Simulate ground truth data
 % Output:
 %   - U, V,
 %   - Z, X
-
-    nuep = -.3;
     
     U = featrnd(I, K, 0.7);
     V = featrnd(J, L, 0.8);

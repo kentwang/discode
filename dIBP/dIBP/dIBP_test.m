@@ -28,7 +28,7 @@ W_true = [[1, 1, 0, 0, 0, 0];
     [0, 0, 1, 0, 0, 1]; 
     [0, 0, 0, 1, 1, 1]; 
     [0, 1, 1, 0, 0, 0]];
-[U_true, V_true, Z_true, X] = synthetic(W_true, I, J, K, L);
+[U_true, V_true, Z_true, X] = synthetic(W_true, I, J, K, L, nuep);
 
 % initialization
 U = U_true; V = V_true; W = W_true; Z = Z_true;

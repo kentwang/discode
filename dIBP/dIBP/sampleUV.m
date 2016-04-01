@@ -8,7 +8,7 @@ function [U, V, W] = sampleUV(Z, U, V, W, nuep, a, b, sigma_w)
     % update U (and W if any new row features from U)
     [I, K] = size(U);
     for i = 1:I
-        printf('U iter %d/%d\n', i, I);
+        % printf('U iter %d/%d\n', i, I);
         for k = 1:K
             if k > K
                 break;
@@ -79,7 +79,7 @@ function [U, V, W] = sampleUV(Z, U, V, W, nuep, a, b, sigma_w)
     % update V (and W if any new column features from V)
     [J, L] = size(V);
     for j = 1:J
-        printf('V iter %d/%d\n', j, J);
+        % printf('V iter %d/%d\n', j, J);
         for l = 1:L
             if l > L
                 break;

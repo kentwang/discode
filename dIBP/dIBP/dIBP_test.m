@@ -21,7 +21,7 @@ K_inf = 15; L_inf = 15;
 a = 2; b = 5; c = 1;
 
 % synthetic data
-I = 15; J = 20;
+I = 40; J = 60;
 K = 4; L = 6;
 M = max(K, L);
 W_true = [[1, 1, 0, 0, 0, 0]; 

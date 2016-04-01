@@ -4,3 +4,6 @@ put sampler_nofigure.m Matlab_code/
 
 # copy from github repo to octave VM
 cp -r ~/Documents/discode/ ~/Documents/Oct/discode
+
+# run and save to file name of time
+octave sampler.m > output/text/$( date '+%Y%m%d%H%M.o' )

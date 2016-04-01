@@ -8,7 +8,8 @@ function result = updateSigw(sigma_w, U, V, W, Z, nuep)
 		sigma_w_prop = sigma_w - rand/20;
 	end
 
-	sigma_w_acc = min(1, tW_tZFpdf(W, Z, U, V, nuep, sigma_w_prop) / tW_tZFpdf(W, Z, U, V, nuep, sigma_w));
+	% sigma_w_acc = min(1, tW_tZFpdf(W, Z, U, V, nuep, sigma_w_prop) / tW_tZFpdf(W, Z, U, V, nuep, sigma_w));
+	sigma_w_acc = exp(min(0, tW_tZFlogpdf(W, Z, U, V, nuep, sigma_w_prop) - tW_tZFlogpdf(W, Z, U, V, nuep, sigma_w)));
 
 	if rand < sigma_w_acc
 		result = sigma_w_prop;

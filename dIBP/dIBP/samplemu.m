@@ -8,23 +8,32 @@ function [mu_u, mu_v] = samplemu(U, V, mu_u, mu_v, a, b)
 % TODO
 %   - Warning unmatched dimensions
 %   - recheck 0 and 1 as the bounds. Maybe a noise +/- is OK
+%   - Do we need to restrict the dimension of mu_u to be the same as U column?
 
     [I, K] = size(U);
     [J, L] = size(V);
     M = max(K, L);
     
-    % append zerors
+    % append zerors for U or V
     if K < M
         U = [U, zeros(I, M - K)];
-        if length(mu_u) < M
-            mu_u = [mu_u; zeros(M - K, 1)];
-        end
     else
         V = [V, zeros(J, M - J)];
-        if length(mu_v) < M
-            mu_v = [mu_v; zeros(M - L, 1)];
+    end
+
+    % append zeros for mu_u and mu_v based on size of U/V
+    if length(mu_u) < M
+        for i = (length(mu_u) + 1):M
+            mu_u = [mu_u; mu_u(i - 1) / 3];
         end
     end
+
+    if length(mu_v) < M
+        for i = (length(mu_v) + 1):M
+            mu_v = [mu_v; mu_v(i - 1) / 3];
+        end
+    end
+
     mu = [mu_u, mu_v];
     
     % MH sampling

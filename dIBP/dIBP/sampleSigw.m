@@ -7,5 +7,5 @@ function [sigma_w, a_sigw, b_sigw] = sampleSigw(a_sigw, b_sigw, K, L, W)
 
 	a_sigw = a_sigw + K * L / 2;
 	b_sigw = 2 * b_sigw / (2 + b_sigw * prod(W(:)));
-	sigma_w = gamrnd(a_sigw, b_sigw);
+	sigma_w = sqrt(1 / gamrnd(a_sigw, b_sigw));
 end

@@ -1,5 +1,5 @@
 function result = tW_tZFlogpdf(W, Z, U, V, nuep, sigma_w)
-% pdf of posterior of stacked W
+% log pdf of posterior of stacked W. May be able to get around using cancelation.
 
 % NOTE
 %	- |SIGMA| will explode is sigma_w is too large!!!
@@ -9,9 +9,9 @@ function result = tW_tZFlogpdf(W, Z, U, V, nuep, sigma_w)
 	F = kron(V, U);
 	tz = Z(:);
 
-
-	MU = inv(F' * F + eye(K * L, K * L) / sigma_w^2) * F' * (tz - nuep * ones(I * J, 1));
 	SIGMA = inv(F' * F + eye(K * L, K * L) / sigma_w^2);
+	MU = SIGMA * F' * (tz - nuep * ones(I * J, 1));
+	
 
 	result = log(mvnpdf(W(:)', MU', SIGMA));
 end

@@ -1,4 +1,4 @@
-function [result, K_plus] = sampleIBP(alpha, num_objects)
+ vfunction [result, K_plus] = sampleIBP(alpha, num_objects)
 
 result = zeros(num_objects, 1000); % assume 1000 is infinite dimension
 t = poissrnd(alpha); % first customer takes t dishes

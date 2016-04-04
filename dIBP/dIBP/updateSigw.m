@@ -1,5 +1,8 @@
 function result = updateSigw(sigma_w, U, V, W, Z, nuep)
 % update sigma_w using MH sampling
+
+% TODO
+% 	- Cancel out common terms when propose and sample.
 	
 	% propose sigma_w using uniform perturbation
 	if rand < .5

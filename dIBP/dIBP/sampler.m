@@ -53,6 +53,7 @@ SAMPLE_SIZE = 1000; % number of Monte Carlo sample
 sigma_w = 1;
 nuep = 1;
 a = 1; b = 1;
+a_sigw = 1; b_sigw = 1;
 K_inf = 15; L_inf = 15;
 
 U = U_true + randn(size(U_true)) / 10;
@@ -81,10 +82,12 @@ for e=1:E
 	mu = match_with_zero(mu_u, mu_v);
 	[U, V, W] = sampleUV(Z, U, V, W, nuep, a, b, sigma_w);
 	W = sampleW(Z, U, V, nuep, sigma_w);
+	[k, L] = size(W);
 	Z = sampleZ(X, U, V, W, nuep);
 	[a, b] = updateAB(a, b, mu);
-	sigma_w = updateSigw(sigma_w, U, V, W, Z, nuep);
-	nuep = samplenuep(U, V, W, Z);
+	% sigma_w = updateSigw(sigma_w, U, V, W, Z, nuep);
+	[sigma_w, a_sigw, b_sigw] = sampleSigw(a_sigw, b_sigw, K, L, W);
+	nuep = sampleNuep(U, V, W, Z);
 
 	printf('iter %d: a = %f, b = %f, nuep = %f, sigma_w = %f \n', e, a, b, nuep, sigma_w);
 

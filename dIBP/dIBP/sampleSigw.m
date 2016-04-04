@@ -6,6 +6,6 @@ function [sigma_w, a_sigw, b_sigw] = sampleSigw(a_sigw, b_sigw, K, L, W)
 %	- but invgamma-normal conjugacy use shape and rate
 
 	a_sigw = a_sigw + K * L / 2;
-	b_sigw = 2 * b_sigmw / (2 + b_sigmw * prod(W(:)));
-	sigma_w = gamrnd(a_sigw, b_sigmw);
+	b_sigw = 2 * b_sigw / (2 + b_sigw * prod(W(:)));
+	sigma_w = gamrnd(a_sigw, b_sigw);
 end

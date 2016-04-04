@@ -1,4 +1,4 @@
-function result = samplenuep(U, V, W, Z)
+function result = sampleNuep(U, V, W, Z)
 % sample nuep directly from the posterior distribution
 
 	[I, J] = size(Z);

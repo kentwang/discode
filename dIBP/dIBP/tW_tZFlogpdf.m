@@ -10,8 +10,8 @@ function result = tW_tZFlogpdf(W, Z, U, V, nuep, sigma_w)
 	tz = Z(:);
 
 	SIGMA = inv(F' * F + eye(K * L, K * L) / sigma_w^2);
-	MU = SIGMA * F' * (tz - nuep * ones(I * J, 1));
 	
+	MU = SIGMA * F' * (tz - nuep * ones(I * J, 1));
 
 	result = log(mvnpdf(W(:)', MU', SIGMA));
 end

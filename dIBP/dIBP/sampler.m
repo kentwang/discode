@@ -22,6 +22,7 @@ pkg load all;
 seed = 20160209;
 rand("seed", seed); randn("seed", seed); randg("seed", seed);
 
+
 % trandn(0, Inf)
 % [X, Y] = bibetarnd(3, 1, 1, 1)
 % X

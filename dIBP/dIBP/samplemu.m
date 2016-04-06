@@ -6,35 +6,66 @@ function [mu_u, mu_v] = samplemu(U, V, mu_u, mu_v, a, b)
 %   - a, b: controling parameters of dIBP
     
 % TODO
-%   - Warning unmatched dimensions
-%   - recheck 0 and 1 as the bounds. Maybe a noise +/- is OK
-%   - Do we need to restrict the dimension of mu_u to be the same as U column?
+%   - mu_u is matched with U
 
     [I, K] = size(U);
     [J, L] = size(V);
-    M = max(K, L);
+    M_low = min(K, L)
+    M_high = max(K, L);
+
+    % M-H sampling for paired mu. % M_low >= 2
+    for r = 1:M_low
+        mu_r = [mu_u(r), mu_v(r)];
+        if r == 1
+            mu_r_plus = [mu_u(r+1), mu_v(r+1)];
+
+            mu_u_r_prop = truncbetarnd(a / K, 1, mu_u(r+1), 1);
+            mu_v_r_prop = truncbetarnd(b / L, 1, mu_v(r+1), 1);
+            mu_r_prop = [mu_u_r_prop, mu_v_r_prop];
+
+            logl_curr = binologlik(U(:, r), mu_r(1)) + binologlik(V(:, r), mu_r(2)) + mu1_mu2logpdf(mu_r, mu_r_plus, a, b) - mu1_mu2proplogpdf(mu_r, mu_r_plus, a/K, b/L);
+            logl_prop = binologlik(U(:, r), mu_r_prop(1)) + binologlik(V(:, r), mu_r_prop(2)) + mu1_mu2logpdf(mu_r_prop, mu_r_plus, a, b) - mu1_mu2proplogpdf(mu_r_prop, mu_r_plus, a/K, b/L);
+        elseif r == M_low
+            mu_r_minus = [mu_u(r-1), mu_v(r-1)];
+
+            mu_u_r_prop = truncbetarnd(a / K, 1, 0, mu_u(r-1));
+            mu_v_r_prop = truncbetarnd(b / L, 1, 0, mu_v(r-1));
+            mu_r_prop = [mu_u_r_prop, mu_v_r_prop];
+
+            logl_curr = binologlik(U(:, r), mu_r(1)) + binologlik(V(:, r), mu_r(2)) + mu2_mu1logpdf(mu_r_minus, mu_r, a, b) - mu2_mu1proplogpdf(mu_r_minus, mu_r, a/K, b/L);
+            logl_prop = binologlik(U(:, r), mu_r_prop(1)) + binologlik(V(:, r), mu_r_prop(2)) + mu2_mu1logpdf(mu_r_minus, mu_r_prop, a, b) - mu2_mu1proplogpdf(mu_r_minus, mu_r_prop, a/K, b/L);
+
+        else
+        end
+
+        % M-H updating
+        mu_acc = exp(min(0, logl_prop - logl_curr));
+        if rand < mu_acc
+            mu(r, :) = mu_r_prop;
+        end        
+    end
     
     % append zerors for U or V
-    if K < M
-        U = [U, zeros(I, M - K)];
-    else
-        V = [V, zeros(J, M - J)];
-    end
+    % if K < M
+    %     U = [U, zeros(I, M - K)];
+    % else
+    %     V = [V, zeros(J, M - J)];
+    % end
 
-    % append zeros for mu_u and mu_v based on size of U/V
-    if length(mu_u) < M
-        for i = (length(mu_u) + 1):M
-            mu_u = [mu_u; mu_u(i - 1) / 3];
-        end
-    end
+    % % append zeros for mu_u and mu_v based on size of U/V
+    % if length(mu_u) < M
+    %     for i = (length(mu_u) + 1):M
+    %         mu_u = [mu_u; mu_u(i - 1) / 3];
+    %     end
+    % end
 
-    if length(mu_v) < M
-        for i = (length(mu_v) + 1):M
-            mu_v = [mu_v; mu_v(i - 1) / 3];
-        end
-    end
+    % if length(mu_v) < M
+    %     for i = (length(mu_v) + 1):M
+    %         mu_v = [mu_v; mu_v(i - 1) / 3];
+    %     end
+    % end
 
-    mu = [mu_u, mu_v];
+    % mu = [mu_u, mu_v];
     
     % MH sampling
     for r = 1:M

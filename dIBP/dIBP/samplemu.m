@@ -6,11 +6,11 @@ function [mu_u, mu_v] = samplemu(U, V, mu_u, mu_v, a, b)
 %   - a, b: controling parameters of dIBP
     
 % TODO
-%   - mu_u is matched with U
+%   - Test unmatched mu_u update
 
     [I, K] = size(U);
     [J, L] = size(V);
-    M_low = min(K, L)
+    M_low = min(K, L);
     M_high = max(K, L);
 
     % M-H sampling for paired mu. % M_low >= 2
@@ -19,8 +19,8 @@ function [mu_u, mu_v] = samplemu(U, V, mu_u, mu_v, a, b)
         if r == 1
             mu_r_plus = [mu_u(r+1), mu_v(r+1)];
 
-            mu_u_r_prop = truncbetarnd(a / K, 1, mu_u(r+1), 1);
-            mu_v_r_prop = truncbetarnd(b / L, 1, mu_v(r+1), 1);
+            mu_u_r_prop = truncbetarnd(a / K, 1, mu_r_plus(1), 1);
+            mu_v_r_prop = truncbetarnd(b / L, 1,mu_r_plus(2), 1);
             mu_r_prop = [mu_u_r_prop, mu_v_r_prop];
 
             logl_curr = binologlik(U(:, r), mu_r(1)) + binologlik(V(:, r), mu_r(2)) + mu1_mu2logpdf(mu_r, mu_r_plus, a, b) - mu1_mu2proplogpdf(mu_r, mu_r_plus, a/K, b/L);
@@ -28,88 +28,108 @@ function [mu_u, mu_v] = samplemu(U, V, mu_u, mu_v, a, b)
         elseif r == M_low
             mu_r_minus = [mu_u(r-1), mu_v(r-1)];
 
-            mu_u_r_prop = truncbetarnd(a / K, 1, 0, mu_u(r-1));
-            mu_v_r_prop = truncbetarnd(b / L, 1, 0, mu_v(r-1));
+            mu_u_r_prop = truncbetarnd(a / K, 1, 0, mu_r_minus(1));
+            mu_v_r_prop = truncbetarnd(b / L, 1, 0, mu_r_minus(2));
             mu_r_prop = [mu_u_r_prop, mu_v_r_prop];
 
             logl_curr = binologlik(U(:, r), mu_r(1)) + binologlik(V(:, r), mu_r(2)) + mu2_mu1logpdf(mu_r_minus, mu_r, a, b) - mu2_mu1proplogpdf(mu_r_minus, mu_r, a/K, b/L);
             logl_prop = binologlik(U(:, r), mu_r_prop(1)) + binologlik(V(:, r), mu_r_prop(2)) + mu2_mu1logpdf(mu_r_minus, mu_r_prop, a, b) - mu2_mu1proplogpdf(mu_r_minus, mu_r_prop, a/K, b/L);
-
         else
+            mu_r_plus = [mu_u(r+1), mu_v(r+1)];
+            mu_r_minus = [mu_u(r-1), mu_v(r-1)];
+
+            mu_u_r_prop = truncbetarnd(a / K, 1, mu_r_plus(1), mu_r_minus(1));
+            mu_v_r_prop = truncbetarnd(b / L, 1, mu_r_plus(2), mu_r_minus(2));
+            mu_r_prop = [mu_u_r_prop, mu_v_r_prop];
+
+            logl_curr = binologlik(U(:, r), mu_r(1)) + binologlik(V(:, r), mu_r(2)) + mu_fullcondlogpdf(mu_r_minus, mu_r, mu_r_plus, a, b) - truncbetalogpdf(mu_r(1), a/K, 1, mu_r_plus(1), mu_r_minus(1)) - truncbetalogpdf(mu_r(2), b/L, 1, mu_r_plus(2), mu_r_minus(2));
+            logl_prop = binologlik(U(:, r), mu_r_prop(1)) + binologlik(V(:, r), mu_r_prop(2)) + mu_fullcondlogpdf(mu_r_minus, mu_r, mu_r_plus, a, b) - truncbetalogpdf(mu_r_prop(1), a/K, 1, mu_r_plus(1), mu_r_minus(1)) - truncbetalogpdf(mu_r_prop(2), b/L, 1, mu_r_plus(2), mu_r_minus(2));
         end
 
         % M-H updating
         mu_acc = exp(min(0, logl_prop - logl_curr));
+        % printf('Updating matched dimension %d with rate %f\n', r, mu_acc);
+
         if rand < mu_acc
-            mu(r, :) = mu_r_prop;
+            mu_u(r) = mu_r_prop(1);
+            mu_v(r) = mu_r_prop(2);
         end        
     end
-    
-    % append zerors for U or V
-    % if K < M
-    %     U = [U, zeros(I, M - K)];
-    % else
-    %     V = [V, zeros(J, M - J)];
-    % end
 
-    % % append zeros for mu_u and mu_v based on size of U/V
-    % if length(mu_u) < M
-    %     for i = (length(mu_u) + 1):M
-    %         mu_u = [mu_u; mu_u(i - 1) / 3];
-    %     end
-    % end
+    % M-H sampling for possible unpaired mu using univariate
+    if K < M_high % update mu_v
+        for r = (M_low+1):M_high
+            if r == M_high
+                mu_v_r_minus = mu_v(r-1);
+                mu_v_r_prop = truncbetarnd(b/L, 1, 0, mu_v_r_minus);
 
-    % if length(mu_v) < M
-    %     for i = (length(mu_v) + 1):M
-    %         mu_v = [mu_v; mu_v(i - 1) / 3];
-    %     end
-    % end
+                logl_curr = binologlik(V(:, r), mu_v(r)) + mu2_mu1logpdf_univ(mu_v_r_minus, mu_v(r), b) - mu2_mu1proplogpdf_univ(mu_v_r_minus, mu_v(r), b/L);
 
-    % mu = [mu_u, mu_v];
-    
-    % MH sampling
-    for r = 1:M
-        % input of each sampling        
-        if r == 1 % propose for the first mu
-            lower_u = mu_u(r + 1);
-            lower_v = mu_v(r + 1);
-            upper_u = min(mu_u(r) + 0.1, 1);
-            upper_v = min(mu_v(r) + 0.1, 1);
-        elseif r == M % propose for the last mu
-            lower_u = max(mu_u(r) - 0.1, 0);
-            lower_v = max(mu_v(r) - 0.1, 0);
-            upper_u = mu_u(r - 1);
-            upper_v = mu_v(r - 1);
-        else % update others
-            lower_u = mu_u(r + 1);
-            lower_v = mu_v(r + 1);
-            upper_u = mu_u(r - 1);
-            upper_v = mu_v(r - 1);
+                logl_prop = binologlik(V(:, r), mu_v_r_prop) + mu2_mu1logpdf_univ(mu_v_r_minus, mu_v_r_prop, b) - mu2_mu1proplogpdf_univ(mu_v_r_minus, mu_v_r_prop, b/L);
+            else
+                mu_v_r_minus = mu_v(r-1);
+                mu_v_r_plus = mu_v(r+1);
+                mu_v_r_prop = truncbetarnd(b/L, 1, mu_v_r_plus, mu_v_r_minus);
+
+                logl_curr = binologlik(V(:, r), mu_v(r)) + mu_fullcondlogpdf_univ(mu_v_r_minus, mu_v(r), mu_v_r_plus, b) - truncbetalogpdf(mu_v(r), b/L, 1, mu_v_r_plus, mu_v_r_minus);
+
+                logl_prop = binologlik(V(:, r), mu_v_r_prop) + mu_fullcondlogpdf_univ(mu_v_r_minus, mu_v_r_prop, mu_v_r_plus, b) - truncbetalogpdf(mu_v_r_prop, b/L, 1, mu_v_r_plus, mu_v_r_minus);
+            end
+
+            % update unmatched mu_v
+            mu_v_acc = exp(min(0, logl_prop - logl_curr));
+            % printf('Updating unmatched dimension %d for mu_v with rate %f\n', r, mu_v_acc);
+
+            if rand < mu_v_acc
+                mu_v(r) = mu_v_r_prop;
+            end   
         end
-        
-        mu_u_r_prop = truncbetarnd(a / K, 1, lower_u, upper_u);
-        mu_v_r_prop = truncbetarnd(b / L, 1, lower_v, upper_v);
-        mu_r_prop = [mu_u_r_prop, mu_v_r_prop];
-        
-        if r == 1 % starting mu accept ratio
-            accept_r = muacceptratio(U(:, r), V(:, r), mu(r, :), ...
-                mu_r_prop, mu(r + 1, :), [1, 1], a, b, 1, K, L);
-        elseif r == M % trailing mu accept ratio
-            accept_r = muacceptratio(U(:, r), V(:, r), mu(r, :), ...
-                mu_r_prop, [0, 0], mu(r - 1, :), a, b, 1, K, L);
-        else
-            accept_r = muacceptratio(U(:, r), V(:, r), mu(r, :), ...
-                mu_r_prop, mu(r + 1, :), mu(r - 1, :), a, b, 1, K, L);
+    elseif L < M_high % update mu_u. THIS HAS NOT BEEN TESTES YET.
+        for r = (M_low+1):M_high
+            if r == M_high
+                mu_u_r_minus = mu_u(r-1);
+                mu_u_r_prop = truncbetarnd(a/K, 1, 0, mu_u_r_minus);
+
+                logl_curr = binologlik(U(:, r), mu_u(r)) + mu2_mu1logpdf_univ(mu_u_r_minus, mu_u(r), a) - mu2_mu1proplogpdf_univ(mu_u_r_minus, mu_u(r), a/K);
+
+                logl_prop = binologlik(U(:, r), mu_u_r_prop) + mu2_mu1logpdf_univ(mu_u_r_minus, mu_u_r_prop, a) - mu2_mu1proplogpdf_univ(mu_u_r_minus, mu_u_r_prop, a/K);
+            else
+                mu_u_r_minus = mu_u(r-1);
+                mu_u_r_plus = mu_u(r+1);
+                mu_u_r_prop = truncbetarnd(a/K, 1, mu_u_r_plus, mu_u_r_minus);
+
+                logl_curr = binologlik(U(:, r), mu_u(r)) + mu_fullcondlogpdf_univ(mu_u_r_minus, mu_u(r), mu_u_r_plus, b) - truncbetalogpdf(mu_u(r), a/K, 1, mu_u_r_plus, mu_u_r_minus);
+
+                logl_prop = binologlik(U(:, r), mu_u_r_prop) + mu_fullcondlogpdf_univ(mu_u_r_minus, mu_u_r_prop, mu_u_r_plus, a) - truncbetalogpdf(mu_u_r_prop, a/K, 1, mu_u_r_plus, mu_u_r_minus);
+            end
+
+            % update unmatched mu_u
+            mu_u_acc = exp(min(0, logl_prop - logl_curr));
+            % printf('Updating unmatched dimension %d for mu_u with rate %f\n', r, mu_u_acc);
+
+            if rand < mu_u_acc
+                mu_u(r) = mu_u_r_prop;
+            end 
         end
-        
-        if rand < accept_r
-            mu(r, :) = mu_r_prop;
-        end
+    else
+        continue;
     end
-    
-    mu_u = mu(1:K, 1); % truncated to real probs
-    mu_v = mu(1:L, 2);
 end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

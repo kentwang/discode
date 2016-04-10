@@ -40,7 +40,7 @@ W_true = [[1, 1, 0, 0, 0, 0];
 I = 15; J = 20;
 K = 4; L = 6;
 
-[U_true, V_true, Z_true, X] = synthetic(W_true, I, J, K, L, -.2);
+[U_orig, V_orig, Z_orig, X] = synthetic(W_true, I, J, K, L, -2);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% inference
@@ -55,14 +55,16 @@ sigma_w = 1;
 nuep = 1;
 a = 1; b = 1;
 a_sigw = 1; b_sigw = 1;
-K_inf = 15; L_inf = 15;
+K_inf = 10; L_inf = 10;
 
-U = U_true + randn(size(U_true)) / 10;
-V = V_true + randn(size(V_true)) / 10;
-Z = Z_true + randn(size(Z_true)) / 10;
+% use sampledIBP for U and V
+U = U_true; % maybe put randomness
+V = V_true;
+% use normal for W
 W = W_true + randn(size(W_true)) / 10;
-mu_u = 1./(2:(size(U, 2) + 1))';
-mu_v = 1./(2:(size(V, 2) + 1))';
+% Z = Z_true + randn(size(Z_true)) / 10;
+mu_u = sort(mean(U_orig, 1)', 'descend');
+mu_v = sort(mean(V_orig, 1)', 'descend');
 
 chain.U = zeros(SAMPLE_SIZE, I, K_inf);
 chain.V = zeros(SAMPLE_SIZE, J, L_inf);
@@ -77,21 +79,20 @@ chain.b = zeros(SAMPLE_SIZE, 1);
 
 %% MCMC
 s_counter = 0;
-for e=1:E
+for e=1:20
 
 	[mu_u, mu_v] = samplemu(U, V, mu_u, mu_v, a, b);
-	mu = match_with_zero(mu_u, mu_v);
 	[U, V, W] = sampleUV(Z, U, V, W, nuep, a, b, sigma_w);
 	W = sampleW(Z, U, V, nuep, sigma_w);
-	[k, L] = size(W);
+	[K, L] = size(W);
 	Z = sampleZ(X, U, V, W, nuep);
-	[a, b] = updateAB(a, b, mu);
+	[a, b] = updateAB(a, b, mu_u, mu_v);
 	% sigma_w = updateSigw(sigma_w, U, V, W, Z, nuep);
 	[sigma_w, a_sigw, b_sigw] = sampleSigw(a_sigw, b_sigw, K, L, W);
 	nuep = sampleNuep(U, V, W, Z);
 
 	printf('iter %d: a = %f, b = %f, nuep = %f, sigma_w = %f \n', e, a, b, nuep, sigma_w);
-
+	printf('K and L: %d, %d\n', K, L);
 end
 
 

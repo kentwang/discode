@@ -13,6 +13,26 @@ function [mu_u, mu_v] = samplemu(U, V, mu_u, mu_v, a, b)
     M_low = min(K, L);
     M_high = max(K, L);
 
+    % expand mu_u and mu_v when unmatched with U and V
+    K_u = length(mu_u);
+    L_v = length(mu_v);
+
+    if K_u > K
+        mu_u = mu_u(1:K);
+    elseif K_u < K
+        for k = (K_u+1):K
+            mu_u = [mu_u; mu_u(k-1)/3];
+        end
+    end
+
+    if L_v > L
+        mu_v = mu_v(1:L);
+    elseif L_v < L
+        for l = (L_v+1):L
+            mu_v = [mu_v; mu_v(l-1)/3];
+        end
+    end
+
     % M-H sampling for paired mu. % M_low >= 2
     for r = 1:M_low
         mu_r = [mu_u(r), mu_v(r)];

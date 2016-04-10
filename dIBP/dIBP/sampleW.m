@@ -10,8 +10,8 @@ function result = sampleW(Z, U, V, nuep, sigma_w)
 	tZ = Z(:);
 
 
-	MU = inv(F' * F + eye(K * L, K * L) / sigma_w^2) * F' * (tZ - nuep * ones(I * J, 1));
 	SIGMA = inv(F' * F + eye(K * L, K * L) / sigma_w^2);
+	MU = SIGMA * F' * (tZ - nuep * ones(I * J, 1));
 	tW_new = mvnrnd(MU, SIGMA)';
 
 	result = reshape(tW_new, K, L);

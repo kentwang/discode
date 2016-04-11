@@ -58,13 +58,12 @@ a_sigw = 1; b_sigw = 1;
 K_inf = 10; L_inf = 10;
 
 % use sampledIBP for U and V
-U = U_true; % maybe put randomness
-V = V_true;
+[U, V, K_plus, L_plus] = sampleDIBP(a, b, I, J);
 % use normal for W
 W = W_true + randn(size(W_true)) / 10;
-% Z = Z_true + randn(size(Z_true)) / 10;
-mu_u = sort(mean(U_orig, 1)', 'descend');
-mu_v = sort(mean(V_orig, 1)', 'descend');
+Z = Z_orig + randn(size(Z_orig)) / 10;
+mu_u = sort(mean(U, 1)', 'descend');
+mu_v = sort(mean(V, 1)', 'descend');
 
 chain.U = zeros(SAMPLE_SIZE, I, K_inf);
 chain.V = zeros(SAMPLE_SIZE, J, L_inf);

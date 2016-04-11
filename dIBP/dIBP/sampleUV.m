@@ -1,12 +1,17 @@
-function [U, V, W] = sampleUV(Z, U, V, W, nuep, a, b, sigma_w)
+function [U, V, W] = sampleUV(Z, U, V, K_plus, L_plus, W, nuep, a, b, sigma_w)
 % Update U and V (simultaneously K and L)
 % Augment W for new features of U and V
+
+% Todo
+%   - Add K_plus and L_plus as input
+%   - Fix the updating of K_plus and L_plus
+%   - Integrate out W in the very beginning
 
 % Test
 % U = U_true; V = V_true; W = W_true; Z = Z_true;
     
     % update U (and W if any new row features from U)
-    [I, K] = size(U);
+    % [I, K] = size(U);
     for i = 1:I
         % printf('U iter %d/%d\n', i, I);
         for k = 1:K

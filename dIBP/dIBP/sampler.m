@@ -19,7 +19,7 @@ pkg load all;
 % fix random seed
 % test random seed trand.m and bibetarnd.m are OK
 
-seed = 20160209;
+seed = 20160410;
 rand("seed", seed); randn("seed", seed); randg("seed", seed);
 
 

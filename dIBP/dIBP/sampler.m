@@ -19,8 +19,8 @@ pkg load all;
 % fix random seed
 % test random seed trand.m and bibetarnd.m are OK
 
-seed = 20160410;
-rand("seed", seed); randn("seed", seed); randg("seed", seed);
+seed = 20160411;
+rand("seed", seed); randn("seed", seed); randg("seed", seed); randp("seed", seed);
 
 
 % trandn(0, Inf)
@@ -81,7 +81,7 @@ s_counter = 0;
 for e=1:20
 
 	[mu_u, mu_v] = samplemu(U, V, mu_u, mu_v, a, b);
-	[U, V, W] = sampleUV(Z, U, V, W, nuep, a, b, sigma_w);
+	[U, V, K_plus, L_plus] = sampleUV(Z, U, V, I, J, K_plus, L_plus, nuep, a, b, sigma_w);
 	W = sampleW(Z, U, V, nuep, sigma_w);
 	[K, L] = size(W);
 	Z = sampleZ(X, U, V, W, nuep);

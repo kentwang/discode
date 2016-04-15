@@ -6,7 +6,7 @@ function [mu_u, mu_v] = samplemu(U, V, mu_u, mu_v, a, b)
 %   - a, b: controling parameters of dIBP
     
 % TODO
-%   - Test unmatched mu_u update
+%   - Add K_plus, L_plus as input
 
     [I, K] = size(U);
     [J, L] = size(V);

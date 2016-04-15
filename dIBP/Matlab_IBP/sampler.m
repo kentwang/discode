@@ -66,6 +66,8 @@ for e=1:E
     disp(['At iteration ', num2str(e), ': K_plus is ', num2str(K_plus), ', alpha is ', num2str(alpha)]);
 
     for i=1:num_objects
+        printf('# col Z: %d. ', size(Z, 2));
+
         % The matrix M will be handy for future likelihood and matrix
         % inverse computations.
         M = (Z(:,1:K_plus)'*Z(:,1:K_plus) + (sigma_X^2/sigma_A^2)*diag(ones(K_plus,1)))^-1;
@@ -139,6 +141,7 @@ for e=1:E
         end;
         Z(i,K_plus+1:K_plus+new_dishes) = 1;
         K_plus = K_plus + new_dishes;
+        printf('# new dishes: %d.\n', new_dishes);
     end;
 
     % Metropolis steps for sampling sigma_X and sigma_A. Mixed MH and Gibbs
@@ -152,8 +155,8 @@ for e=1:E
     else
         pr_sigma_X = sigma_X + rand/20;
     end;
-    
-    M = (Z(:,1:K_plus+new_dishes)'*Z(:,1:K_plus+new_dishes) + ...
+    M = (Z(:,1:K_plus+new_dishes)'*Z(:,
+    1:K_plus+new_dishes) + ...
         (pr_sigma_X^2/sigma_A^2)*diag(ones(K_plus+new_dishes,1)))^-1;
     l_new_X = likelihood(X, Z(:,1:K_plus+new_dishes), M, sigma_A, pr_sigma_X, ...
         K_plus+new_dishes, num_objects, object_dim);

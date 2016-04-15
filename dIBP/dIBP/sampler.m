@@ -1,6 +1,7 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% to do list
+%% TODO
+%$ 	- double check mu_u and mu_v update (conformability with K_plus and L_plus)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % - set upper limit of K_inf and L_inf
@@ -19,7 +20,7 @@ pkg load all;
 % fix random seed
 % test random seed trand.m and bibetarnd.m are OK
 
-seed = 20160411;
+seed = 1;
 rand("seed", seed); randn("seed", seed); randg("seed", seed); randp("seed", seed);
 
 
@@ -37,10 +38,10 @@ W_true = [[1, 1, 0, 0, 0, 0];
     [0, 0, 0, 1, 1, 1]; 
     [0, 1, 1, 0, 0, 0]];
 
-I = 15; J = 20;
+I = 30; J = 50;
 K = 4; L = 6;
 
-[U_orig, V_orig, Z_orig, X] = synthetic(W_true, I, J, K, L, -2);
+[U_orig, V_orig, Z_orig, X] = synthetic(W_true, I, J, K, L, -2.2);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% inference
@@ -53,7 +54,7 @@ SAMPLE_SIZE = 1000; % number of Monte Carlo sample
 
 sigma_w = 1;
 nuep = 1;
-a = 1; b = 1;
+a = .3; b = .5;
 a_sigw = 1; b_sigw = 1;
 K_inf = 10; L_inf = 10;
 
@@ -78,20 +79,17 @@ chain.b = zeros(SAMPLE_SIZE, 1);
 
 %% MCMC
 s_counter = 0;
-for e=1:20
-
+for iter = 1:4
 	[mu_u, mu_v] = samplemu(U, V, mu_u, mu_v, a, b);
 	[U, V, K_plus, L_plus] = sampleUV(Z, U, V, I, J, K_plus, L_plus, nuep, a, b, sigma_w);
-	W = sampleW(Z, U, V, nuep, sigma_w);
-	[K, L] = size(W);
-	Z = sampleZ(X, U, V, W, nuep);
+	Z = sampleZ2(X, U, V, K_plus, L_plus, sigma_w, nuep);
 	[a, b] = updateAB(a, b, mu_u, mu_v);
-	% sigma_w = updateSigw(sigma_w, U, V, W, Z, nuep);
-	[sigma_w, a_sigw, b_sigw] = sampleSigw(a_sigw, b_sigw, K, L, W);
-	nuep = sampleNuep(U, V, W, Z);
+	sigma_w = sampleSigw2(Z, U, V, K_plus, L_plus, sigma_w, nuep);
+	nuep = sampleNuep2(Z, U, V, K_plus, L_plus, sigma_w);
 
-	printf('iter %d: a = %f, b = %f, nuep = %f, sigma_w = %f \n', e, a, b, nuep, sigma_w);
-	printf('K and L: %d, %d\n', K, L);
+	printf('a = %f, b = %f, nuep = %f, sigma_w = %f \n', a, b, nuep, sigma_w);
+	% printf('iter %d: a = %f, b = %f, nuep = %f, sigma_w = %f \n', iter, a, b, nuep, sigma_w);
+	% printf('K+ and L+: %d, %d\n', K_plus, L_plus);
 end
 
 

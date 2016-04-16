@@ -52,7 +52,7 @@ E = 1000; % length of MCMC sample
 BURN_IN = 0;
 SAMPLE_SIZE = 1000; % number of Monte Carlo sample
 
-sigma_w = 1;
+sigmaw = 1;
 nuep = 1;
 a = .3; b = .5;
 a_sigw = 1; b_sigw = 1;
@@ -72,23 +72,24 @@ chain.Z = zeros(SAMPLE_SIZE, I, J);
 chain.W = zeros(SAMPLE_SIZE, K, L); 
 chain.K = zeros(SAMPLE_SIZE, 1);
 chain.L = zeros(SAMPLE_SIZE, 1);
-chain.sigma_w = zeros(SAMPLE_SIZE, 1);
+chain.sigmaw = zeros(SAMPLE_SIZE, 1);
 chain.nuep = zeros(SAMPLE_SIZE, 1);
 chain.a = zeros(SAMPLE_SIZE, 1);
 chain.b = zeros(SAMPLE_SIZE, 1);
 
 %% MCMC
 s_counter = 0;
-for iter = 1:4
-	[mu_u, mu_v] = samplemu(U, V, mu_u, mu_v, a, b);
-	[U, V, K_plus, L_plus] = sampleUV(Z, U, V, I, J, K_plus, L_plus, nuep, a, b, sigma_w);
-	Z = sampleZ2(X, U, V, K_plus, L_plus, sigma_w, nuep);
+for iter = 1:10
+	[mu_u, mu_v] = samplemu(U(:,1:K_plus), V(:,1:L_plus), mu_u, mu_v, a, b);
+	[U, V, K_plus, L_plus] = sampleUV(Z, U, V, I, J, K_plus, L_plus, nuep, a, b, sigmaw);
+	Z = sampleZ2(X, U, V, K_plus, L_plus, sigmaw, nuep);
 	[a, b] = updateAB(a, b, mu_u, mu_v);
-	sigma_w = sampleSigw2(Z, U, V, K_plus, L_plus, sigma_w, nuep);
-	nuep = sampleNuep2(Z, U, V, K_plus, L_plus, sigma_w);
+	sigmaw = sampleSigw2(Z, U, V, K_plus, L_plus, sigmaw, nuep);
+	nuep = sampleNuep2(Z, U, V, K_plus, L_plus, sigmaw);
 
-	printf('a = %f, b = %f, nuep = %f, sigma_w = %f \n', a, b, nuep, sigma_w);
-	% printf('iter %d: a = %f, b = %f, nuep = %f, sigma_w = %f \n', iter, a, b, nuep, sigma_w);
+	printf('a = %f, b = %f, nuep = %f, sigmaw = %f \n', a, b, nuep, sigmaw);
+	% disp(['At iteration', num2str(iter), ': b is ', num2str(a)]);
+	% printf('iter %d: a = %f, b = %f, nuep = %f, sigmaw = %f \n', iter, a, b, nuep, sigmaw);
 	% printf('K+ and L+: %d, %d\n', K_plus, L_plus);
 end
 

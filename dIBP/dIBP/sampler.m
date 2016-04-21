@@ -53,24 +53,24 @@ BURN_IN = 0;
 SAMPLE_SIZE = 1000; % number of Monte Carlo sample
 
 sigmaw = 1;
-nuep = 1;
-a = .3; b = .5;
+nuep = -2;
+a = 1; b = 1;
 a_sigw = 1; b_sigw = 1;
-K_inf = 10; L_inf = 10;
+K_inf = 8; L_inf = 10;
 
 % use sampledIBP for U and V
 [U, V, K_plus, L_plus] = sampleDIBP(a, b, I, J);
 % use normal for W
-W = W_true + randn(size(W_true)) / 10;
+% W = W_true + randn(size(W_true)) / 10;
 Z = Z_orig + randn(size(Z_orig)) / 10;
-mu_u = sort(mean(U, 1)', 'descend');
-mu_v = sort(mean(V, 1)', 'descend');
+mu_u = sort(mean(U(:, 1:K_plus), 1)', 'descend');
+mu_v = sort(mean(V(:, 1:L_plus), 1)', 'descend');
 
 chain.U = zeros(SAMPLE_SIZE, I, K_inf);
 chain.V = zeros(SAMPLE_SIZE, J, L_inf);
 chain.Z = zeros(SAMPLE_SIZE, I, J);
-chain.W = zeros(SAMPLE_SIZE, K, L); 
-chain.K = zeros(SAMPLE_SIZE, 1);
+% chain.W = zeros(SAMPLE_SIZE, K, L); 
+chain.K_plus = zeros(SAMPLE_SIZE, 1);
 chain.L = zeros(SAMPLE_SIZE, 1);
 chain.sigmaw = zeros(SAMPLE_SIZE, 1);
 chain.nuep = zeros(SAMPLE_SIZE, 1);
@@ -78,30 +78,35 @@ chain.a = zeros(SAMPLE_SIZE, 1);
 chain.b = zeros(SAMPLE_SIZE, 1);
 
 %% MCMC
-s_counter = 0;
-for iter = 1:10
-	[mu_u, mu_v] = samplemu(U(:,1:K_plus), V(:,1:L_plus), mu_u, mu_v, a, b);
-	[U, V, K_plus, L_plus] = sampleUV(Z, U, V, I, J, K_plus, L_plus, nuep, a, b, sigmaw);
+for iter = 1:1000
+	disp(["iter: ", num2str(iter)]);
+
+	[mu_u, mu_v] = samplemu(U, V, K_plus, L_plus, mu_u, mu_v, a, b);
+	% disp('mu_u');
+	% disp(mu_u'); 
+	% disp('mu_v');
+	% disp(mu_v');
+
+	% mu_u = sort(mean(U(:, 1:K_plus), 1)', 'descend');
+	% mu_v = sort(mean(V(:, 1:L_plus), 1)', 'descend');
+
+	[U, V, K_plus, L_plus] = sampleUV(Z, U, V, I, J, K_plus, L_plus, nuep, a, b, sigmaw, K_inf, L_inf);
+	% disp(["U: " num2str(mean(U)), "; V: ", num2str(mean(V)), "; K_plus", num2str(K_plus), "; L_plus", num2str(L_plus)]);
+
 	Z = sampleZ2(X, U, V, K_plus, L_plus, sigmaw, nuep);
 	[a, b] = updateAB(a, b, mu_u, mu_v);
+
 	sigmaw = sampleSigw2(Z, U, V, K_plus, L_plus, sigmaw, nuep);
 	nuep = sampleNuep2(Z, U, V, K_plus, L_plus, sigmaw);
+	% disp(["a, b: ", num2str(a), ", ", num2str(b), "; sigmaw, nuep: ", num2str(sigmaw), ", ", num2str(nuep)]);
+	% disp(["iter: ", num2str(iter)]);
 
-	printf('a = %f, b = %f, nuep = %f, sigmaw = %f \n', a, b, nuep, sigmaw);
+	% fprintf (stderr, "wait please...\n");
+	% pause (10);
+
+	printf('K_plus = %d, L_plus = %d, a = %f, b = %f, nuep = %f, sigmaw = %f \n', K_plus, L_plus, a, b, nuep, sigmaw);
 	% disp(['At iteration', num2str(iter), ': b is ', num2str(a)]);
 	% printf('iter %d: a = %f, b = %f, nuep = %f, sigmaw = %f \n', iter, a, b, nuep, sigmaw);
 	% printf('K+ and L+: %d, %d\n', K_plus, L_plus);
 end
-
-
-
-
-
-
-
-
-
-
-
-
 

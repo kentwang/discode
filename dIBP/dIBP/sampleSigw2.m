@@ -7,7 +7,7 @@ function result = sampleSigw2(Z, U, V, K_plus, L_plus, sigma_w, nuep)
 	F = kron(V(:, 1:L_plus), U(:, 1:K_plus));
 
 	MU = nuep * ones(I*J, 1);
-	SIGMA_curr = inv(eye(I*J) - F*(F'*F + eye(K_plus*L_plus)/sigma_w^2)^-1*F');
+	SIGMA_curr = inv(eye(I*J) - F*inv(F'*F + eye(K_plus*L_plus)/sigma_w^2)*F');
     loglik_curr = logmvnpdf(tz', MU', SIGMA_curr);
 
 

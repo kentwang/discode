@@ -4,7 +4,7 @@ function result = sampleNuep2(Z, U, V, K_plus, L_plus, sigma_w)
 	tz = Z(:);
 	F = kron(V(:, 1:L_plus), U(:, 1:K_plus));
 
-	mu = tz'*(eye(I*J) - F*(F'*F + eye(K_plus*L_plus)/sigma_w^2)^-1*F')*ones(I*J, 1)/(I*J + 1);
+	mu = tz'*(eye(I*J) - F*inv(F'*F + eye(K_plus*L_plus)/sigma_w^2)*F')*ones(I*J, 1)/(I*J + 1);
 	sigma = 1/(I*J + 1);
 	result = normrnd(mu, sigma);
 end

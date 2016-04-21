@@ -1,0 +1,16 @@
+iter: 1
+K_plus = 2, L_plus = 4, a = 0.164432, b = 0.965653, nuep = -0.549730, sigmaw = 1.003439 
+iter: 2
+K_plus = 3, L_plus = 4, a = 0.196950, b = 0.915814, nuep = -0.286110, sigmaw = 0.999451 
+iter: 3
+K_plus = 3, L_plus = 4, a = 0.176296, b = 0.871152, nuep = -0.239289, sigmaw = 0.993397 
+iter: 4
+K_plus = 4, L_plus = 6, a = 0.176296, b = 0.871152, nuep = -0.375386, sigmaw = 1.003706 
+iter: 5
+K_plus = 4, L_plus = 6, a = 0.217523, b = 0.835558, nuep = -0.433509, sigmaw = 1.053543 
+iter: 6
+K_plus = 4, L_plus = 6, a = 0.236427, b = 0.860023, nuep = -0.314130, sigmaw = 1.089692 
+iter: 7
+K_plus = 4, L_plus = 6, a = 0.246935, b = 0.843900, nuep = -0.293337, sigmaw = 1.089692 
+iter: 8
+

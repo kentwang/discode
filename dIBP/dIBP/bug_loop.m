@@ -78,84 +78,59 @@ chain.a = zeros(SAMPLE_SIZE, 1);
 chain.b = zeros(SAMPLE_SIZE, 1);
 
 %% MCMC
-[mu_u, mu_v] = samplemu(U, V, mu_u, mu_v, a, b);
+disp(['iter: ', num2str(1)]);
+[mu_u, mu_v] = samplemu(U(:,1:K_plus), V(:,1:L_plus), mu_u, mu_v, a, b);
+disp(['mu_u: ', num2str(mu_u'), '; mu_v: ', num2str(mu_v')]);
+
 [U, V, K_plus, L_plus] = sampleUV(Z, U, V, I, J, K_plus, L_plus, nuep, a, b, sigmaw);
+disp(['U: ' num2str(mean(U)), '; V: ', num2str(mean(V)), '; K_plus', num2str(K_plus), '; L_plus', num2str(L_plus)]);
+
 Z = sampleZ2(X, U, V, K_plus, L_plus, sigmaw, nuep);
 [a, b] = updateAB(a, b, mu_u, mu_v);
+
 sigmaw = sampleSigw2(Z, U, V, K_plus, L_plus, sigmaw, nuep);
 nuep = sampleNuep2(Z, U, V, K_plus, L_plus, sigmaw);
+disp(['a, b: ', num2str(a), ', ', num2str(b), '; sigmaw, nuep: ', num2str(sigmaw), ', ', num2str(nuep)]);
+
+fprintf (stderr, "wait please...\n");
 
 
-[mu_u, mu_v] = samplemu(U, V, mu_u, mu_v, a, b);
+
+disp(['iter: ', num2str(2)]);
+[mu_u, mu_v] = samplemu(U(:,1:K_plus), V(:,1:L_plus), mu_u, mu_v, a, b);
+disp(['mu_u: ', num2str(mu_u'), '; mu_v: ', num2str(mu_v')]);
+
 [U, V, K_plus, L_plus] = sampleUV(Z, U, V, I, J, K_plus, L_plus, nuep, a, b, sigmaw);
+disp(['U: ' num2str(mean(U)), '; V: ', num2str(mean(V)), '; K_plus', num2str(K_plus), '; L_plus', num2str(L_plus)]);
+
 Z = sampleZ2(X, U, V, K_plus, L_plus, sigmaw, nuep);
 [a, b] = updateAB(a, b, mu_u, mu_v);
+
 sigmaw = sampleSigw2(Z, U, V, K_plus, L_plus, sigmaw, nuep);
 nuep = sampleNuep2(Z, U, V, K_plus, L_plus, sigmaw);
+disp(['a, b: ', num2str(a), ', ', num2str(b), '; sigmaw, nuep: ', num2str(sigmaw), ', ', num2str(nuep)]);
+
+fprintf (stderr, "wait please...\n");
 
 
-[mu_u, mu_v] = samplemu(U, V, mu_u, mu_v, a, b);
+
+disp(['iter: ', num2str(3)]);
+[mu_u, mu_v] = samplemu(U(:,1:K_plus), V(:,1:L_plus), mu_u, mu_v, a, b);
+disp(['mu_u: ', num2str(mu_u'), '; mu_v: ', num2str(mu_v')]);
+
 [U, V, K_plus, L_plus] = sampleUV(Z, U, V, I, J, K_plus, L_plus, nuep, a, b, sigmaw);
+disp(['U: ' num2str(mean(U)), '; V: ', num2str(mean(V)), '; K_plus', num2str(K_plus), '; L_plus', num2str(L_plus)]);
+
 Z = sampleZ2(X, U, V, K_plus, L_plus, sigmaw, nuep);
 [a, b] = updateAB(a, b, mu_u, mu_v);
+
 sigmaw = sampleSigw2(Z, U, V, K_plus, L_plus, sigmaw, nuep);
 nuep = sampleNuep2(Z, U, V, K_plus, L_plus, sigmaw);
+disp(['a, b: ', num2str(a), ', ', num2str(b), '; sigmaw, nuep: ', num2str(sigmaw), ', ', num2str(nuep)]);
+
+fprintf (stderr, "wait please...\n");
 
 
-[mu_u, mu_v] = samplemu(U, V, mu_u, mu_v, a, b);
-[U, V, K_plus, L_plus] = sampleUV(Z, U, V, I, J, K_plus, L_plus, nuep, a, b, sigmaw);
-Z = sampleZ2(X, U, V, K_plus, L_plus, sigmaw, nuep);
-[a, b] = updateAB(a, b, mu_u, mu_v);
-sigmaw = sampleSigw2(Z, U, V, K_plus, L_plus, sigmaw, nuep);
-nuep = sampleNuep2(Z, U, V, K_plus, L_plus, sigmaw);
-
-
-[mu_u, mu_v] = samplemu(U, V, mu_u, mu_v, a, b);
-[U, V, K_plus, L_plus] = sampleUV(Z, U, V, I, J, K_plus, L_plus, nuep, a, b, sigmaw);
-Z = sampleZ2(X, U, V, K_plus, L_plus, sigmaw, nuep);
-[a, b] = updateAB(a, b, mu_u, mu_v);
-sigmaw = sampleSigw2(Z, U, V, K_plus, L_plus, sigmaw, nuep);
-nuep = sampleNuep2(Z, U, V, K_plus, L_plus, sigmaw);
-
-
-[mu_u, mu_v] = samplemu(U, V, mu_u, mu_v, a, b);
-[U, V, K_plus, L_plus] = sampleUV(Z, U, V, I, J, K_plus, L_plus, nuep, a, b, sigmaw);
-Z = sampleZ2(X, U, V, K_plus, L_plus, sigmaw, nuep);
-[a, b] = updateAB(a, b, mu_u, mu_v);
-sigmaw = sampleSigw2(Z, U, V, K_plus, L_plus, sigmaw, nuep);
-nuep = sampleNuep2(Z, U, V, K_plus, L_plus, sigmaw);
-
-
-[mu_u, mu_v] = samplemu(U, V, mu_u, mu_v, a, b);
-[U, V, K_plus, L_plus] = sampleUV(Z, U, V, I, J, K_plus, L_plus, nuep, a, b, sigmaw);
-Z = sampleZ2(X, U, V, K_plus, L_plus, sigmaw, nuep);
-[a, b] = updateAB(a, b, mu_u, mu_v);
-sigmaw = sampleSigw2(Z, U, V, K_plus, L_plus, sigmaw, nuep);
-nuep = sampleNuep2(Z, U, V, K_plus, L_plus, sigmaw);
-
-
-[mu_u, mu_v] = samplemu(U, V, mu_u, mu_v, a, b);
-[U, V, K_plus, L_plus] = sampleUV(Z, U, V, I, J, K_plus, L_plus, nuep, a, b, sigmaw);
-Z = sampleZ2(X, U, V, K_plus, L_plus, sigmaw, nuep);
-[a, b] = updateAB(a, b, mu_u, mu_v);
-sigmaw = sampleSigw2(Z, U, V, K_plus, L_plus, sigmaw, nuep);
-nuep = sampleNuep2(Z, U, V, K_plus, L_plus, sigmaw);
-
-
-[mu_u, mu_v] = samplemu(U, V, mu_u, mu_v, a, b);
-[U, V, K_plus, L_plus] = sampleUV(Z, U, V, I, J, K_plus, L_plus, nuep, a, b, sigmaw);
-Z = sampleZ2(X, U, V, K_plus, L_plus, sigmaw, nuep);
-[a, b] = updateAB(a, b, mu_u, mu_v);
-sigmaw = sampleSigw2(Z, U, V, K_plus, L_plus, sigmaw, nuep);
-nuep = sampleNuep2(Z, U, V, K_plus, L_plus, sigmaw);
-
-
-[mu_u, mu_v] = samplemu(U, V, mu_u, mu_v, a, b);
-[U, V, K_plus, L_plus] = sampleUV(Z, U, V, I, J, K_plus, L_plus, nuep, a, b, sigmaw);
-Z = sampleZ2(X, U, V, K_plus, L_plus, sigmaw, nuep);
-[a, b] = updateAB(a, b, mu_u, mu_v);
-sigmaw = sampleSigw2(Z, U, V, K_plus, L_plus, sigmaw, nuep);
-nuep = sampleNuep2(Z, U, V, K_plus, L_plus, sigmaw);
 
 
 

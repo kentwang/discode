@@ -1,4 +1,4 @@
-function [U, V, K_plus, L_plus] = sampleUV(Z, U, V, I, J, K_plus, L_plus, nuep, a, b, sigma_w)
+function [U, V, K_plus, L_plus] = sampleUV(Z, U, V, I, J, K_plus, L_plus, nuep, a, b, sigma_w, K_inf, L_inf)
 % Update U and V (simultaneously K and L)
 % Augment W for new features of U and V
 
@@ -14,7 +14,7 @@ function [U, V, K_plus, L_plus] = sampleUV(Z, U, V, I, J, K_plus, L_plus, nuep, 
     % [I, K] = size(U);
 
     for i = 1:I
-        % printf('# col U: %d. ', size(U, 2));
+        % disp(['U row: ', num2str(i)]);
         for k = 1:K_plus
             if k > K_plus
                 break;
@@ -48,7 +48,7 @@ function [U, V, K_plus, L_plus] = sampleUV(Z, U, V, I, J, K_plus, L_plus, nuep, 
         % sample new features of U
         % sampling new features naively using Prior Poisson
         n_new_lim = 4;
-        alpha_i = a / i; % alpha/I
+        alpha_I = a / I; % alpha/I
 
         % trunc = zeros(1, n_new_lim + 1);
         % % W_hist = {};        
@@ -56,7 +56,7 @@ function [U, V, K_plus, L_plus] = sampleUV(Z, U, V, I, J, K_plus, L_plus, nuep, 
         %     U(i, (K_plus+1):(K_plus+k_i)) = 1; % test here U with new feature
         %     % W_aug = W_expand(k_i, 2, Z, U, V, W, nuep, sigma_w); % append rows for new features U. TEST GOOD!
 
-        %     trunc(k_i+1) = k_i*log(alpha_I) - alpha_I - log(factorial(k_i)) + Z_UVlogpdf(Z, U(:,1:K_plus+k_i), V, sigma_w, nuep, I, J, K_plus+k_i, L_plus);
+        %     trunc(k_i+1) = k_i*log(alpha_I) - alpha_I - log(factorial(k_i)) + Z_UVlogpdf(Z, U(:,1:K_plus+k_i), V(:,1:L_plus), sigma_w, nuep, I, J, K_plus+k_i, L_plus);
         %     % W_hist{k_i + 1} = W_aug;
         % end
         
@@ -64,23 +64,32 @@ function [U, V, K_plus, L_plus] = sampleUV(Z, U, V, I, J, K_plus, L_plus, nuep, 
         % trunc = exp(trunc - max(trunc));
         % trunc = trunc/sum(trunc);
         % p = rand;
+        % disp(['p: ', num2str(p)]);
         % t = 0;
         % for k_i=0:n_new_lim
         %     t = t+trunc(k_i+1);
+        %     disp(['t: ', num2str(t)]);
         %     if p < t
         %         new_dishes = k_i;
         %         break;
         %     end;
         % end;
 
-        U(i,K_plus+1:K_plus+n_new_lim) = 0;
-        new_dishes = poissrnd(alpha_i);
+        % U(i,K_plus+1:K_plus+n_new_lim) = 0;
+        if K_plus >= K_inf
+            new_dishes = 0;
+        else
+            new_dishes = poissrnd(alpha_I);
+        end
+
         U(i, (K_plus+1):(K_plus+new_dishes)) = 1; % exchangeable
         % U = U(:, 1:(K + new_dishes)); % shink the zero columns. NO NEED!
         % W = W_hist{new_dishes + 1};
         K_plus = K_plus + new_dishes;
 
-        % printf('new dishes: %d.\n', new_dishes);
+        % if new_dishes > 0
+        %     printf('new dishes of U: %d\n', new_dishes);
+        % end
     end
 
     % plot the updated U matrix
@@ -89,7 +98,8 @@ function [U, V, K_plus, L_plus] = sampleUV(Z, U, V, I, J, K_plus, L_plus, nuep, 
     % update V (and W if any new column features from V)
     % [J, L] = size(V);
     for j = 1:J
-        % printf('# col V: %d. ', size(V, 2));
+        
+        % disp(['V row: ', num2str(j)]);
         for l = 1:L_plus
             if l > L_plus
                 break;
@@ -121,7 +131,7 @@ function [U, V, K_plus, L_plus] = sampleUV(Z, U, V, I, J, K_plus, L_plus, nuep, 
         %
 
         n_new_lim = 4;
-        beta_j = b / j; % beta/J
+        beta_J = b / J; % beta/J
 
         % trunc = zeros(1, n_new_lim + 1);
         % % W_hist = {};        
@@ -136,21 +146,31 @@ function [U, V, K_plus, L_plus] = sampleUV(Z, U, V, I, J, K_plus, L_plus, nuep, 
         % trunc = exp(trunc - max(trunc));
         % trunc = trunc/sum(trunc);
         % p = rand;
+        % % disp(['p: ', num2str(p)]);
         % t = 0;
         % for l_j=0:n_new_lim
         %     t = t+trunc(l_j+1);
+        %     % disp(['t: ', num2str(t)]);
         %     if p < t
         %         new_dishes = l_j;
         %         break;
         %     end;
         % end;
 
-        V(j,L_plus+1:L_plus+n_new_lim) = 0;
-        new_dishes = poissrnd(beta_j);
+        % V(j,L_plus+1:L_plus+n_new_lim) = 0;
+        if L_plus >= L_inf
+            new_dishes = 0;
+        else
+            new_dishes = poissrnd(beta_J);
+        end
+
         V(j, (L_plus+1):(L_plus+new_dishes)) = 1; % exchangeable
         % V = V(:, 1:(L + new_dishes)); % shink the zero columns
         % W = W_hist{new_dishes + 1};
         L_plus = L_plus + new_dishes;
-        % printf('new dishes: %d.\n', new_dishes);
+        
+        % if new_dishes > 0
+        %     printf('new dishes of V: %d.\n', new_dishes);
+        % end
     end
 end

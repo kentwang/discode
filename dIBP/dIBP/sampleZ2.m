@@ -15,7 +15,7 @@ function result = sampleZ2(X, U, V, K_plus, L_plus, sigma_w, nuep)
 
 	F = kron(V(:, 1:L_plus), U(:, 1:K_plus));
 	MU = nuep * ones(length(tx), 1);
-	SIGMA = inv(eye(I*J) - F*(F'*F + eye(K_plus*L_plus)/sigma_w^2)^-1*F');
+	SIGMA = inv(eye(I*J) - F*inv(F'*F + eye(K_plus*L_plus)/sigma_w^2)*F');
 	diagSIGMA = diag(SIGMA);
 
 	

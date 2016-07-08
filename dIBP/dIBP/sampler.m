@@ -54,9 +54,9 @@ SAMPLE_SIZE = 1000; % number of Monte Carlo sample
 
 sigmaw = 1;
 nuep = -2;
-a = 1; b = 1;
+a = .4; b = 1;
 a_sigw = 1; b_sigw = 1;
-K_inf = 8; L_inf = 10;
+K_inf = 8; L_inf = 15;
 
 % use sampledIBP for U and V
 [U, V, K_plus, L_plus] = sampleDIBP(a, b, I, J);
@@ -78,7 +78,7 @@ chain.a = zeros(SAMPLE_SIZE, 1);
 chain.b = zeros(SAMPLE_SIZE, 1);
 
 %% MCMC
-for iter = 1:1000
+for iter = 1:500
 	disp(["iter: ", num2str(iter)]);
 
 	[mu_u, mu_v] = samplemu(U, V, K_plus, L_plus, mu_u, mu_v, a, b);

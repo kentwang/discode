@@ -1,0 +1,75 @@
+iter: 1
+K_plus = 2, L_plus = 4, a = 0.364432, b = 0.965653, nuep = -0.549730, sigmaw = 1.003439 
+iter: 2
+K_plus = 3, L_plus = 4, a = 0.396950, b = 0.915814, nuep = -0.286110, sigmaw = 0.999451 
+iter: 3
+K_plus = 3, L_plus = 4, a = 0.376296, b = 0.871152, nuep = -0.239289, sigmaw = 0.993397 
+iter: 4
+K_plus = 4, L_plus = 6, a = 0.336793, b = 0.849564, nuep = -0.375386, sigmaw = 1.003706 
+iter: 5
+K_plus = 4, L_plus = 6, a = 0.378020, b = 0.813970, nuep = -0.433509, sigmaw = 1.053543 
+iter: 6
+K_plus = 4, L_plus = 6, a = 0.396925, b = 0.838435, nuep = -0.314130, sigmaw = 1.089692 
+iter: 7
+K_plus = 4, L_plus = 6, a = 0.407432, b = 0.822312, nuep = -0.293337, sigmaw = 1.089692 
+iter: 8
+K_plus = 5, L_plus = 7, a = 0.365375, b = 0.861253, nuep = -0.563327, sigmaw = 1.065782 
+iter: 9
+K_plus = 5, L_plus = 8, a = 0.358748, b = 0.815977, nuep = -0.430849, sigmaw = 1.098873 
+iter: 10
+K_plus = 6, L_plus = 9, a = 0.404441, b = 0.768957, nuep = -0.319917, sigmaw = 1.119712 
+iter: 11
+K_plus = 6, L_plus = 10, a = 0.384997, b = 0.740246, nuep = -0.801745, sigmaw = 1.119712 
+iter: 12
+K_plus = 7, L_plus = 10, a = 0.363191, b = 0.756362, nuep = -0.393998, sigmaw = 1.125811 
+iter: 13
+K_plus = 7, L_plus = 10, a = 0.409963, b = 0.803714, nuep = -0.158640, sigmaw = 1.125811 
+iter: 14
+K_plus = 5, L_plus = 10, a = 0.448435, b = 0.789636, nuep = -0.210744, sigmaw = 1.125811 
+iter: 15
+K_plus = 5, L_plus = 10, a = 0.484304, b = 0.740597, nuep = 0.009018, sigmaw = 1.125811 
+iter: 16
+K_plus = 7, L_plus = 10, a = 0.509479, b = 0.754138, nuep = -0.058371, sigmaw = 1.125811 
+iter: 17
+K_plus = 8, L_plus = 10, a = 0.509479, b = 0.754138, nuep = 0.030003, sigmaw = 1.148740 
+iter: 18
+K_plus = 8, L_plus = 10, a = 0.559073, b = 0.768743, nuep = -0.056163, sigmaw = 1.148740 
+iter: 19
+K_plus = 7, L_plus = 10, a = 0.598617, b = 0.776394, nuep = -0.023343, sigmaw = 1.148740 
+iter: 20
+K_plus = 8, L_plus = 10, a = 0.567771, b = 0.756444, nuep = 0.166992, sigmaw = 1.148740 
+iter: 21
+K_plus = 8, L_plus = 10, a = 0.570547, b = 0.775714, nuep = 0.068782, sigmaw = 1.191500 
+iter: 22
+K_plus = 7, L_plus = 10, a = 0.566358, b = 0.820053, nuep = 0.205535, sigmaw = 1.191500 
+iter: 23
+K_plus = 7, L_plus = 10, a = 0.551274, b = 0.804713, nuep = 0.231044, sigmaw = 1.191500 
+iter: 24
+K_plus = 7, L_plus = 10, a = 0.565204, b = 0.777461, nuep = 0.278136, sigmaw = 1.191500 
+iter: 25
+K_plus = 8, L_plus = 10, a = 0.565204, b = 0.777461, nuep = 0.149969, sigmaw = 1.191500 
+iter: 26
+K_plus = 7, L_plus = 10, a = 0.546184, b = 0.731087, nuep = 0.156214, sigmaw = 1.191500 
+iter: 27
+K_plus = 8, L_plus = 10, a = 0.510633, b = 0.718387, nuep = 0.184830, sigmaw = 1.203092 
+iter: 28
+K_plus = 8, L_plus = 10, a = 0.527935, b = 0.707175, nuep = 0.094432, sigmaw = 1.217339 
+iter: 29
+K_plus = 8, L_plus = 10, a = 0.573761, b = 0.730900, nuep = 0.178257, sigmaw = 1.217339 
+iter: 30
+K_plus = 6, L_plus = 10, a = 0.622348, b = 0.732664, nuep = 0.204881, sigmaw = 1.265078 
+iter: 31
+K_plus = 6, L_plus = 10, a = 0.643968, b = 0.715782, nuep = 0.230450, sigmaw = 1.289885 
+iter: 32
+K_plus = 4, L_plus = 10, a = 0.659043, b = 0.667208, nuep = 0.158985, sigmaw = 1.288182 
+iter: 33
+K_plus = 4, L_plus = 10, a = 0.610990, b = 0.682511, nuep = 0.082887, sigmaw = 1.288182 
+iter: 34
+K_plus = 3, L_plus = 10, a = 0.635946, b = 0.714055, nuep = 0.106049, sigmaw = 1.296332 
+iter: 35
+K_plus = 3, L_plus = 10, a = 0.639634, b = 0.693518, nuep = 0.219290, sigmaw = 1.296332 
+iter: 36
+K_plus = 3, L_plus = 10, a = 0.653470, b = 0.740565, nuep = 0.285435, sigmaw = 1.324835 
+iter: 37
+K_plus = 1, L_plus = 10, a = 0.691702, b = 0.771533, nuep = 0.239840, sigmaw = 1.335187 
+iter: 38

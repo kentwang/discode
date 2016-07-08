@@ -1,0 +1,45 @@
+iter: 1
+K_plus = 2, L_plus = 4, a = 0.364432, b = 0.965653, nuep = -0.549730, sigmaw = 1.003439 
+iter: 2
+K_plus = 3, L_plus = 4, a = 0.396950, b = 0.915814, nuep = -0.286110, sigmaw = 0.999451 
+iter: 3
+K_plus = 3, L_plus = 4, a = 0.376296, b = 0.871152, nuep = -0.239289, sigmaw = 0.993397 
+iter: 4
+K_plus = 4, L_plus = 6, a = 0.336793, b = 0.849564, nuep = -0.375386, sigmaw = 1.003706 
+iter: 5
+K_plus = 4, L_plus = 6, a = 0.378020, b = 0.813970, nuep = -0.433509, sigmaw = 1.053543 
+iter: 6
+K_plus = 4, L_plus = 6, a = 0.396925, b = 0.838435, nuep = -0.314130, sigmaw = 1.089692 
+iter: 7
+K_plus = 4, L_plus = 6, a = 0.407432, b = 0.822312, nuep = -0.293337, sigmaw = 1.089692 
+iter: 8
+K_plus = 5, L_plus = 7, a = 0.365375, b = 0.861253, nuep = -0.563327, sigmaw = 1.065782 
+iter: 9
+K_plus = 5, L_plus = 8, a = 0.358748, b = 0.815977, nuep = -0.430849, sigmaw = 1.098873 
+iter: 10
+K_plus = 6, L_plus = 9, a = 0.404441, b = 0.768957, nuep = -0.319917, sigmaw = 1.119712 
+iter: 11
+K_plus = 6, L_plus = 11, a = 0.400268, b = 0.736114, nuep = -0.686613, sigmaw = 1.119712 
+iter: 12
+K_plus = 5, L_plus = 11, a = 0.449678, b = 0.732672, nuep = -0.261682, sigmaw = 1.119712 
+iter: 13
+K_plus = 5, L_plus = 14, a = 0.426456, b = 0.745764, nuep = -0.252106, sigmaw = 1.143824 
+iter: 14
+K_plus = 6, L_plus = 14, a = 0.453209, b = 0.730899, nuep = -0.299001, sigmaw = 1.185341 
+iter: 15
+K_plus = 6, L_plus = 15, a = 0.470449, b = 0.771460, nuep = -0.233878, sigmaw = 1.184673 
+iter: 16
+K_plus = 5, L_plus = 15, a = 0.462743, b = 0.799197, nuep = 0.029724, sigmaw = 1.184673 
+iter: 17
+K_plus = 3, L_plus = 15, a = 0.462743, b = 0.799197, nuep = -0.036038, sigmaw = 1.184673 
+iter: 18
+K_plus = 2, L_plus = 15, a = 0.458829, b = 0.821592, nuep = 0.127682, sigmaw = 1.218351 
+iter: 19
+K_plus = 2, L_plus = 15, a = 0.457175, b = 0.843855, nuep = 0.099583, sigmaw = 1.218351 
+iter: 20
+K_plus = 2, L_plus = 15, a = 0.411122, b = 0.865541, nuep = 0.248236, sigmaw = 1.218351 
+iter: 21
+K_plus = 2, L_plus = 15, a = 0.440347, b = 0.864998, nuep = 0.277941, sigmaw = 1.218351 
+iter: 22
+K_plus = 0, L_plus = 15, a = 0.391490, b = 0.854271, nuep = 0.368611, sigmaw = 1.219137 
+iter: 23
